@@ -100,7 +100,7 @@ void disabled() {}
 void competition_initialize() {}
 
 // Global variable to track the selected autonomous mode
-int selected_auton = 0;
+int selected_auton = 2;
 
 void autonomous() {
     Descorer.set_value(descorerClosed);
