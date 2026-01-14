@@ -125,12 +125,12 @@ void autonomous() {
     Middle_Goal.set_value(middleGoalClosed);
 
     if (selected_auton == 0) {
-        // Left Side auton
+        // LEFT SIDE
         Middle_Goal.set_value(true);
         Intake.move_voltage(12000);
         chassis.moveToPoint(-12, 48, 1500);
         Loader.set_value(true);
-        chassis.turnToHeading(135, 500);
+        chassis.turnToHeading(-135, 500);
         chassis.moveToPoint(-36, 24, 1500);
         chassis.turnToHeading(180, 500);
         chassis.moveToPoint(-36, 0, 1500);
@@ -142,6 +142,24 @@ void autonomous() {
         pros::delay(1500);
         Outtake.move_voltage(0);
     } else if (selected_auton == 1) {
+        // RIGHT SIDE
+        Middle_Goal.set_value(true);
+        Intake.move_voltage(12000);
+        chassis.moveToPoint(12, 48, 1500);
+        Loader.set_value(true);
+        chassis.turnToHeading(135, 500);
+        chassis.moveToPoint(36, 24, 1500);
+        chassis.turnToHeading(180, 500);
+        chassis.moveToPoint(36, 0, 1500);
+        Intake.move_voltage(12000);
+        pros::delay(2500);
+        Intake.move_voltage(0);
+        chassis.moveToPoint(36, 48, 1500, {.forwards=false});
+        Outtake.move_voltage(12000);
+        pros::delay(1500);
+        Outtake.move_voltage(0);
+    } else if (selected_auton == 2) {
+        // SKILLS
         Loader.set_value(false);
         chassis.setPose(0, 0, 0);
         chassis.moveToPoint(0, 48, 2000);
@@ -214,18 +232,8 @@ void autonomous() {
         chassis.moveToPose(12, 0, 0, 3000);
         chassis.turnToHeading(90, 500);
         chassis.moveToPose(-24, 0, 0, 3000);
-    } else if (selected_auton == 2) {
-
     } else if (selected_auton == 3) {
   
-    } else if (selected_auton == 4) {
-        chassis.setPose(0, 0, 0);
-        chassis.turnToHeading(180, 9999);
-    } else if (selected_auton == 5) {
-        chassis.setPose(0, 0, 0);
-        chassis.moveToPoint(0, 12, 5000);
-    } else if (selected_auton == 6) {
-        pros::delay(15000);
     }
 }
 
