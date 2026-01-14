@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "PlsWork",
+    "project_name": "pushback",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -652,9 +652,9 @@
       }
     },
     "upload_options": {
-      "slot": 3,
+      "slot": 1,
       "description": "It Worked",
-      "icon": "pizza"
+      "icon": "X"
     },
     "use_early_access": false
   }
