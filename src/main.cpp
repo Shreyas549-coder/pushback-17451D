@@ -50,7 +50,7 @@ lemlib::Drivetrain drivetrain(&leftMotors, &rightMotors, 13, lemlib::Omniwheel::
 lemlib::ControllerSettings linearController(3, 0, 45, 3, 1, 100, 3, 500, 20);
 
 // angular motion controller
-lemlib::ControllerSettings angularController(0.6, 0, 5, 3, 1, 100, 3, 500, 0);
+lemlib::ControllerSettings angularController(1.2, 0, 7, 3, 1, 100, 3, 500, 0);
 
 // sensors for odometry
 lemlib::OdomSensors sensors(nullptr, nullptr, nullptr, nullptr, &imu);
@@ -100,7 +100,7 @@ void disabled() {}
 void competition_initialize() {}
 
 // Global variable to track the selected autonomous mode
-int selected_auton = 2;
+int selected_auton = 0;
 
 void autonomous() {
     Descorer.set_value(descorerClosed);
@@ -108,6 +108,7 @@ void autonomous() {
     Middle_Goal.set_value(middleGoalClosed);
 
     if (selected_auton == 0) {
+        // Akhil auton
         Middle_Goal.set_value(true);
         Intake.move_voltage(12000);
         chassis.moveToPoint(0, 30, 1500, {.maxSpeed = 50}, true);
@@ -121,34 +122,104 @@ void autonomous() {
         pros::delay(1500);
         Outtake.move_voltage(0);
     } else if (selected_auton == 1) {
-        Loader.set_value(true);
-        chassis.setPose(0, 5, 0);
-        chassis.moveToPose(24, -30, -90, 3000, {.forwards = false});
-        pros::delay(1500);
-        Outtake.move_voltage(12000);
-        pros::delay(500);
-        chassis.moveToPoint(0, -30, 750);
-        chassis.turnToHeading(0, 750);
+        // Initial Setup & Flags
+        Loader.set_value(false); // matchload.set(false) in original - adjusting to your toggle logic
+        // middle_goal and descore variables would be set here if defined in your project
+        
+        // Set starting position at (0,0) facing 0 degrees (North)
+        chassis.setPose(0, 0, 0);
+
+        // driveTo(32, 2000, false)
+        chassis.moveToPoint(0, 48, 2000);
+
+        // turnToAngle(-90, 500, false)
+        chassis.turnToHeading(-90, 500);
+
+        // matchload.set(true) & intake spin
+        Loader.set_value(true); // Assuming false is 'on' based on your logic
         Intake.move_voltage(12000);
-        chassis.moveToPoint(3, -3, 500);
+
+        // driveTo(15, 2500, true, 5) -> Moving further West (X direction)
+        chassis.moveToPoint(-15, 48, 2500);
+        pros::delay(2500);
+
+        // driveTo(-15, 2000, false) -> Back to the turn point
+        chassis.moveToPoint(0, 48, 2000, {.forwards=false});
+
+        Loader.set_value(false);
+        chassis.turnToHeading(0, 500);
+
+        // driveTo(12, 1500, false) -> Move up to Y=44
+        chassis.moveToPoint(0, 36, 1500);
+
+        // turnToAngle(90, 500, false)
         chassis.turnToHeading(90, 500);
-        chassis.moveToPoint(29, -3, 1000, {.maxSpeed = 60});
-        pros::delay(1500);
-        chassis.turnToPoint(40, 8, 500);
-        chassis.moveToPoint(48, 16, 2000, {.maxSpeed = 20});
-        pros::delay(250);
-        Intake.move_voltage(-12000);
-        pros::delay(2000);
-        chassis.moveToPoint(28, -7, 1000, {.forwards = false});
-        chassis.turnToPoint(28, 36, 500);
-        chassis.moveToPoint(28, 28, 2000);
-        Intake.move_voltage(12000);
-        chassis.moveToPoint(28, 36, 1250, {.maxSpeed = 40});
-        chassis.moveToPose(0, 69, -90, 1500);
-        chassis.moveToPoint(18, 69, 1000, {.forwards = false});
+        chassis.setPose(0, 0, 0);
+        // driveTo(85, 3000, false) -> Move East to X=85
+        chassis.moveToPoint(84, 0, 3000);
+
+        chassis.turnToHeading(-90, 500);
+
+        // driveTo(-12, 750, false) -> Backwards on Y
+        chassis.moveToPoint(84, -24, 750);
+
+        chassis.turnToHeading(0, 500);
+        chassis.setPose(0, 0, 0);
+        // driveTo(-9, 1500, true) -> Backwards on X
+        chassis.moveToPoint(0, -13, 1500, {.forwards=false});
+        chassis.setPose(0, 0, 0);
+
+        // Outtake sequence
         Outtake.move_voltage(12000);
-        pros::delay(5000);
+        pros::delay(3000);
+        Outtake.move_voltage(0);
+
+        // matchload.set(true) & Middle interaction
+        Loader.set_value(true);
+        chassis.moveToPoint(0, 47, 5000);
+        pros::delay(2500);
+        chassis.moveToPoint(0, 0, 2000, {.forwards = false});
+
+        Outtake.move_voltage(12000);
+        pros::delay(3000);
+        Outtake.move_voltage(0);
+
+        // driveTo(9, 1500, false)
+        chassis.moveToPoint(0, 20, 1500);
+
+        chassis.turnToHeading(90, 750);
+
+        chassis.moveToPoint(96, 20, 3500);
+
+        chassis.turnToHeading(0, 500);
+        chassis.setPose(0, 0, 0);
+        chassis.moveToPoint(0, 27, 2500);
+        pros::delay(2500);
+        chassis.moveToPoint(0, 0, 2500, {.forwards = false});
+        chassis.turnToHeading(-90, 500);
+
+        chassis.moveToPoint(-12, 0, 3500);
+        chassis.turnToHeading(180, 500);
+        chassis.moveToPoint(-12, 84, 3500);
+        chassis.setPose(0, 0, 0);
+        chassis.turnToHeading(-90, 500);
+        chassis.moveToPoint(-12, 0, 3500);
+        chassis.turnToHeading(0, 500);
+        chassis.moveToPoint(0, -24, 3500, {.forwards=false});
+
+        Outtake.move_voltage(12000);
+        pros::delay(3000);
+        Outtake.move_voltage(0);
+
+        chassis.setPose(0, 0, 0);
+        chassis.moveToPoint(0, 47, 3500);
+        chassis.moveToPoint(0, 0, 3500, {.forwards=false});
+
+        Outtake.move_voltage(12000);
+        pros::delay(3000);
+        Outtake.move_voltage(0);
     } else if (selected_auton == 2) {
+        // Shreyas Auton
         Loader.set_value(false);
         chassis.setPose(0, 0, 0);
         Intake.move_voltage(12000);
@@ -174,6 +245,7 @@ void autonomous() {
         Outtake.move_voltage(12000);
         pros::delay(1750);
     } else if (selected_auton == 3) {
+        //Right Side Shreyas Auton
         Loader.set_value(true);
         chassis.setPose(0, 0, 0);
         Intake.move_voltage(12000);
