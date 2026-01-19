@@ -185,11 +185,59 @@ void autonomous() {
         pros::delay(2000);
         Intake.move_voltage(0);
         chassis.moveToPoint(-47, 47, 2000, {.forwards=false});
+        // First Loader
+        
         chassis.follow(First_Long_Turn_txt, 5, 3000, true);
+        // Transition to other side
+
         chassis.turnToHeading(90, 500);
-        chassis.moveToPoint(30, 47, 2000);
+        chassis.moveToPoint(30, 47, 2000, {.forwards=false});
         outtake(2500);
+        // First Loader Scored
+
+        Intake.move_voltage(12000);
+        Loader.set_value(true);
+        chassis.moveToPoint(62, 47, 2000, {.maxSpeed=60});
+        pros::delay(2000);
+        Intake.move_voltage(0);
+        chassis.moveToPoint(30, 47, 2000, {.forwards=false, .maxSpeed=60});
+        outtake(2500);
+        // Second Loader Scored and Cleared
+
         chassis.follow(Goal_To_Goal_Turn_txt, 5, 3000);
+        // Drive to Other Side
+
+        chassis.turnToHeading(90, 500);
+        Loader.set_value(true);
+        Intake.move_voltage(12000);
+        chassis.moveToPoint(62, -47, 2000, {.maxSpeed=60});
+        pros::delay(2000);
+        Intake.move_voltage(0);
+        chassis.moveToPoint(42, -47, 2000, {.forwards=false});
+        // Third Loader Cleared
+
+        chassis.follow(Second_Long_Turn_txt, 5, 3000, false);
+        // Move to Fourth Loader
+
+        chassis.turnToHeading(-90, 500);
+        chassis.moveToPoint(-27, -47, 2000, {.forwards=false});
+        outtake(2500);
+        // Score Third Loader
+
+        Loader.set_value(true);
+        Intake.move_voltage(12000);
+        chassis.moveToPoint(-60, -47, 2000, {.maxSpeed=60});
+        Intake.move_voltage(0);
+        pros::delay(2000);
+        chassis.moveToPoint(-27, -47, 2000, {.forwards=false, .maxSpeed=60});
+        // Intake and Score 4th Loader
+
+        chassis.moveToPoint(-39, -47, 2000);
+        chassis.turnToHeading(0, 500);
+        chassis.moveToPoint(-39, 0, 1500);
+        chassis.turnToHeading(90, 500);
+        chassis.moveToPoint(-55, 0, 5000, {.forwards=false});
+        // Park
     }
 }
 
