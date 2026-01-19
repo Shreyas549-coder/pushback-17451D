@@ -119,6 +119,15 @@ void competition_initialize() {}
 // Global variable to track the selected autonomous mode
 int selected_auton = 1;
 
+void outtake(int delay_ms) {
+    Intake.move_voltage(12000);
+    Outtake.move_voltage(12000);
+    pros::delay(delay_ms);
+    Outtake.move_voltage(0);
+    Intake.move_voltage(0);
+}
+
+
 void autonomous() {
     Descorer.set_value(descorerClosed);
     Loader.set_value(loaderClosed);
