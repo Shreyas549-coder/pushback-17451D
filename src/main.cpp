@@ -1,5 +1,6 @@
 #include "main.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
+#include "lemlib/asset.hpp"
 #include "lemlib/chassis/trackingWheel.hpp"
 #include "pros/abstract_motor.hpp"
 #include "pros/adi.hpp"
@@ -127,6 +128,10 @@ void outtake(int delay_ms) {
     Intake.move_voltage(0);
 }
 
+ASSET(First_Long_Turn_txt);
+ASSET(Second_Long_Turn_txt);
+ASSET(Goal_To_Goal_Turn_txt);
+
 
 void autonomous() {
     Descorer.set_value(descorerClosed);
@@ -169,6 +174,22 @@ void autonomous() {
         Outtake.move_voltage(0);
     } else if (selected_auton == 2) {
         // SKILLS
+        Loader.set_value(false);
+        Middle_Goal.set_value(true);
+        chassis.setPose(-47, 0, 0);
+        chassis.moveToPoint(-47, 47, 2000);
+        chassis.turnToHeading(-90, 500);
+        Intake.move_voltage(12000);
+        Loader.set_value(true);
+        chassis.moveToPoint(-67, 47, 2000, {.maxSpeed=60});
+        pros::delay(2000);
+        Intake.move_voltage(0);
+        chassis.moveToPoint(-47, 47, 2000, {.forwards=false});
+        chassis.follow(First_Long_Turn_txt, 5, 3000, true);
+        chassis.turnToHeading(90, 500);
+        chassis.moveToPoint(30, 47, 2000);
+        outtake(2500);
+        chassis.follow(Goal_To_Goal_Turn_txt, 5, 3000);
     }
 }
 

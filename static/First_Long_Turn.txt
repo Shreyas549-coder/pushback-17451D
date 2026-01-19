@@ -1,0 +1,59 @@
+-47, 47, 67.122
+-45.762, 45.433, 76.398
+-44.288, 44.085, 86.692
+-42.684, 42.893, 89.527
+-40.999, 41.816, 91.516
+-39.256, 40.836, 93.98
+-37.468, 39.94, 94.752
+-35.648, 39.111, 95.333
+-33.802, 38.341, 95.333
+-31.932, 37.631, 95.772
+-30.044, 36.972, 96.107
+-28.14, 36.36, 96.362
+-26.223, 35.792, 96.553
+-24.294, 35.264, 96.695
+-22.354, 34.775, 96.795
+-20.403, 34.338, 96.795
+-18.443, 33.938, 96.862
+-16.477, 33.574, 96.899
+-14.505, 33.243, 96.911
+-12.524, 32.964, 96.911
+-10.539, 32.721, 96.9
+-8.55, 32.509, 96.869
+-6.558, 32.341, 96.869
+-4.561, 32.218, 96.82
+-2.564, 32.127, 96.753
+-0.564, 32.075, 96.753
+1.435, 32.076, 96.669
+3.435, 32.109, 96.57
+5.434, 32.181, 96.57
+7.429, 32.311, 96.457
+9.422, 32.474, 96.33
+11.412, 32.679, 96.33
+13.394, 32.945, 96.19
+15.371, 33.245, 94.131
+17.34, 33.594, 91.393
+19.298, 34.003, 88.57
+21.247, 34.449, 85.655
+23.183, 34.951, 82.637
+25.102, 35.513, 79.504
+27.01, 36.112, 76.243
+28.896, 36.778, 72.835
+30.761, 37.499, 69.261
+32.611, 38.258, 65.491
+34.427, 39.096, 61.491
+36.22, 39.98, 57.213
+37.993, 40.907, 52.586
+39.718, 41.918, 47.511
+41.421, 42.966, 41.827
+43.088, 44.07, 35.234
+44.708, 45.242, 27.085
+47, 47, 0
+47, 47, 0
+62.869, 59.173, 0
+endData
+127
+100
+200
+-47, 47, -40.228, 35.8, 13.922, 19.897, 47, 47
+#PATH.JERRYIO-DATA {"appVersion":"0.10.0","format":"LemLib v0.5","gc":{"robotWidth":12,"robotHeight":12,"robotIsHolonomic":false,"showRobot":false,"uol":2.54,"pointDensity":2,"controlMagnetDistance":1.968503937007874,"fieldImage":{"displayName":"V5RC 2026 - Push Back (Skills)","signature":"V5RC-PushBack-Skills-TopDownHighlighted-TileColor66_71","origin":{"__type":"built-in"}},"coordinateSystem":"VEX Gaming Positioning System"},"paths":[{"segments":[{"controls":[{"uid":"Rv4PkDRpFm","x":-47,"y":47,"lock":false,"visible":true,"heading":270,"__type":"end-point"},{"uid":"N6ArMAlw3D","x":-40.22818148729081,"y":35.7995386093865,"lock":false,"visible":true,"__type":"control"},{"uid":"3xuckrONkX","x":13.922042792539186,"y":19.896684638730108,"lock":false,"visible":true,"__type":"control"},{"uid":"pZfkp5SVx2","x":47,"y":47,"lock":false,"visible":true,"heading":270,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"aSf5iM9hig"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":127,"label":"127"},"step":1,"from":20,"to":100},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1},"maxDecelerationRate":127},"name":"Path","uid":"0WazNo9ToM","lock":false,"visible":true}]}
