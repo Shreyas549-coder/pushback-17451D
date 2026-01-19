@@ -126,114 +126,40 @@ void autonomous() {
 
     if (selected_auton == 0) {
         // LEFT SIDE
+        Loader.set_value(false);
         Middle_Goal.set_value(true);
         Intake.move_voltage(12000);
-        chassis.moveToPoint(-12, 48, 1500);
-        Loader.set_value(true);
+        chassis.moveToPoint(-6, 45, 2500, {.maxSpeed=45});
         chassis.turnToHeading(-135, 500);
-        chassis.moveToPoint(-36, 24, 1500);
+        chassis.moveToPoint(-31.5, 24, 1500);
         chassis.turnToHeading(180, 500);
-        chassis.moveToPoint(-36, 0, 1500);
+        Loader.set_value(true);
+        chassis.moveToPoint(-31.5, 4, 1500, {.maxSpeed=50});
         Intake.move_voltage(12000);
         pros::delay(2500);
-        Intake.move_voltage(0);
-        chassis.moveToPoint(-36, 48, 1500, {.forwards=false});
+        chassis.moveToPoint(-32, 49, 1500, {.forwards=false, .maxSpeed=40}, false);
         Outtake.move_voltage(12000);
-        pros::delay(1500);
+        pros::delay(100000);
         Outtake.move_voltage(0);
     } else if (selected_auton == 1) {
         // RIGHT SIDE
+        Loader.set_value(false);
         Middle_Goal.set_value(true);
         Intake.move_voltage(12000);
-        chassis.moveToPoint(12, 48, 1500);
-        Loader.set_value(true);
+        chassis.moveToPoint(6, 45, 2500, {.maxSpeed=45});
         chassis.turnToHeading(135, 500);
-        chassis.moveToPoint(36, 24, 1500);
+        chassis.moveToPoint(31.5, 24, 1500);
         chassis.turnToHeading(180, 500);
-        chassis.moveToPoint(36, 0, 1500);
+        Loader.set_value(true);
+        chassis.moveToPoint(32, 2.6125, 1500, {.maxSpeed=60});
         Intake.move_voltage(12000);
         pros::delay(2500);
-        Intake.move_voltage(0);
-        chassis.moveToPoint(36, 48, 1500, {.forwards=false});
+        chassis.moveToPoint(33.5, 48, 1500, {.forwards=false, .maxSpeed=60}, false);
         Outtake.move_voltage(12000);
-        pros::delay(1500);
+        pros::delay(100000);
         Outtake.move_voltage(0);
     } else if (selected_auton == 2) {
         // SKILLS
-        Loader.set_value(false);
-        chassis.setPose(0, 0, 0);
-        chassis.moveToPoint(0, 48, 2000);
-        chassis.turnToHeading(-90, 500);
-        Intake.move_voltage(12000);
-        Loader.set_value(true);
-        chassis.moveToPoint(-14, 48, 2500);
-        pros::delay(2500);
-        chassis.moveToPoint(0, 48, 2000, {.forwards=false});
-        Intake.move_voltage(0);
-        Loader.set_value(false); //Loader 1 Clear
-
-        chassis.turnToHeading(180, 500);
-        chassis.moveToPoint(0, 24, 1500);
-        chassis.turnToHeading(90, 500);
-        chassis.moveToPoint(84, 24, 3000);
-        chassis.turnToHeading(0, 500);
-        chassis.moveToPoint(84, 47, 3000);
-        chassis.turnToHeading(90, 500);
-        chassis.moveToPoint(60, 46.5, 3000, {.forwards=false});
-        Outtake.move_voltage(12000);
-        pros::delay(1500);
-        Outtake.move_voltage(0); //Loader 1 Scored
-
-        chassis.moveToPose(108, 46.5, 90,3000);
-        Intake.move_voltage(12000);
-        Loader.set_value(true);
-        chassis.moveToPoint(84, 47, 3000, {.forwards=false});
-        Intake.move_voltage(0);
-        Loader.set_value(false); // Loader 2 Clear
-
-        chassis.turnToHeading(180, 500);
-        chassis.moveToPoint(96, -47, 3000);
-        chassis.turnToHeading(90, 500);
-        chassis.moveToPoint(60, -47, 3000, {.forwards=false});
-        Outtake.move_voltage(12000);
-        pros::delay(1500);
-        Outtake.move_voltage(0); // Loader 2 Scored
-
-        Loader.set_value(true);
-        Intake.move_voltage(12000);
-        chassis.moveToPose(107, -47, 90, 3000);
-        Intake.move_voltage(12000);
-        Loader.set_value(false);
-        chassis.moveToPoint(84, -47, 3000, {.forwards=false}); // Loader 3 Clear
-
-        chassis.turnToHeading(0, 500);
-        chassis.moveToPoint(84, -34, 3000);
-        chassis.turnToHeading(-90, 500);
-        chassis.moveToPoint(0, -34, 3000);
-        chassis.turnToHeading(180, 500);
-        chassis.moveToPoint(0, -47, 3000);
-        chassis.turnToHeading(-90, 500);
-        chassis.moveToPoint(24, -47, 3000, {.forwards=false});
-        Outtake.move_voltage(12000);
-        pros::delay(1500);
-        Outtake.move_voltage(0); // Loader 3 Scored
-
-        Loader.set_value(true);
-        chassis.moveToPoint(-14, -48, 3000);
-        Intake.move_voltage(12000);
-        chassis.moveToPoint(24, -47, 3000, {.forwards=false});
-        Intake.move_voltage(12000);
-        Loader.set_value(false); // Loader 4 Clear
-
-        Outtake.move_voltage(12000);
-        pros::delay(1500);
-        Outtake.move_voltage(0); // Loader 4 Scored
-
-        chassis.moveToPose(12, 0, 0, 3000);
-        chassis.turnToHeading(90, 500);
-        chassis.moveToPose(-24, 0, 0, 3000);
-    } else if (selected_auton == 3) {
-  
     }
 }
 
@@ -287,10 +213,7 @@ void opcontrol() {
                 Loader.set_value(loaderClosed);
             }
 
-            if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A) &&
-                controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
-                autonomous();
-            }
+            
 
             pros::delay(10);
         }
