@@ -1,6 +1,5 @@
 #include "main.h"
 #include "lemlib/api.hpp" // IWYU pragma: keep
-#include "lemlib/asset.hpp"
 #include "lemlib/chassis/trackingWheel.hpp"
 #include "pros/abstract_motor.hpp"
 #include "pros/adi.hpp"
@@ -90,6 +89,7 @@ ASSET(Upper_Blue_txt);
 // AUTON SELECTOR CODE (with guard)
 //========================================================================================
 
+static bool descorerClosed = true;
 static bool loaderClosed = true;
 static bool middleGoalClosed = true;
 
@@ -117,22 +117,10 @@ void disabled() {}
 void competition_initialize() {}
 
 // Global variable to track the selected autonomous mode
-int selected_auton = 1;
-
-void outtake(int delay_ms) {
-    Intake.move_voltage(12000);
-    Outtake.move_voltage(12000);
-    pros::delay(delay_ms);
-    Outtake.move_voltage(0);
-    Intake.move_voltage(0);
-}
-
-ASSET(First_Long_Turn_txt);
-ASSET(Second_Long_Turn_txt);
-ASSET(Goal_To_Goal_Turn_txt);
-
+int selected_auton = 2;
 
 void autonomous() {
+    Descorer.set_value(descorerClosed);
     Loader.set_value(loaderClosed);
     Middle_Goal.set_value(middleGoalClosed);
 
@@ -173,114 +161,99 @@ void autonomous() {
     } else if (selected_auton == 2) {
         // SKILLS
         Loader.set_value(false);
-        Middle_Goal.set_value(true);
-        chassis.setPose(-47, 0, 0);
-        chassis.moveToPoint(-47, 47, 2000);
+        chassis.setPose(0, 0, 0);
+        chassis.moveToPoint(0, 47, 2000);
         chassis.turnToHeading(-90, 500);
         Intake.move_voltage(12000);
         Loader.set_value(true);
-        chassis.moveToPoint(-67, 47, 2000, {.maxSpeed=60});
-        pros::delay(2000);
-        Intake.move_voltage(0);
-        chassis.moveToPoint(-47, 47, 2000, {.forwards=false});
-        // First Loader
-        
-        chassis.follow(First_Long_Turn_txt, 5, 3000, true);
-        // Transition to other side
+        chassis.moveToPoint(-12.5, 48, 2500);
+        pros::delay(4000);
+        chassis.moveToPoint(0, 48, 1000, {.forwards=false});
+        pros::delay(2500); //Loader 1 Clear
+        Outtake.move_voltage(0);
 
+        chassis.turnToHeading(180, 500);
+        chassis.moveToPoint(0, 24, 1500);
         chassis.turnToHeading(90, 500);
-        chassis.moveToPoint(30, 47, 2000, {.forwards=false});
-        outtake(2500);
-        // First Loader Scored
-
-        Intake.move_voltage(12000);
-        Loader.set_value(true);
-        chassis.moveToPoint(62, 47, 2000, {.maxSpeed=60});
-        pros::delay(2000);
-        Intake.move_voltage(0);
-        chassis.moveToPoint(30, 47, 2000, {.forwards=false, .maxSpeed=60});
-        outtake(2500);
-        // Second Loader Scored and Cleared
-
-        chassis.follow(Goal_To_Goal_Turn_txt, 5, 3000);
-        // Drive to Other Side
-
-        chassis.turnToHeading(90, 500);
-        Loader.set_value(true);
-        Intake.move_voltage(12000);
-        chassis.moveToPoint(62, -47, 2000, {.maxSpeed=60});
-        pros::delay(2000);
-        Intake.move_voltage(0);
-        chassis.moveToPoint(42, -47, 2000, {.forwards=false});
-        // Third Loader Cleared
-
-        chassis.follow(Second_Long_Turn_txt, 5, 3000, false);
-        // Move to Fourth Loader
-
-        chassis.turnToHeading(-90, 500);
-        chassis.moveToPoint(-27, -47, 2000, {.forwards=false});
-        outtake(2500);
-        // Score Third Loader
-
-        Loader.set_value(true);
-        Intake.move_voltage(12000);
-        chassis.moveToPoint(-60, -47, 2000, {.maxSpeed=60});
-        Intake.move_voltage(0);
-        pros::delay(2000);
-        chassis.moveToPoint(-27, -47, 2000, {.forwards=false, .maxSpeed=60});
-        // Intake and Score 4th Loader
-
-        chassis.moveToPoint(-39, -47, 2000);
+        chassis.moveToPoint(84, 24, 3000);
         chassis.turnToHeading(0, 500);
-        chassis.moveToPoint(-39, 0, 1500);
+        chassis.moveToPoint(84, 45, 3000);
         chassis.turnToHeading(90, 500);
-        chassis.moveToPoint(-55, 0, 5000, {.forwards=false});
-        // Park
+        chassis.moveToPoint(60, 43, 3000, {.forwards=false});
+        Intake.move_voltage(12000);
+        Outtake.move_voltage(12000);
+        pros::delay(3000);  //Loader 1 Scored
+        Outtake.move_voltage(0);
+
+        Intake.move_voltage(12000);
+        Loader.set_value(true);
+        chassis.moveToPose(100, 45, 90,3000, {.maxSpeed=60});
+        pros::delay(2500);
+        chassis.moveToPoint(60, 47, 3000, {.forwards=false, .maxSpeed=60}, false); // Loader 2 Clear
+
+        Outtake.move_voltage(12000);
+        pros::delay(3000);
+        Outtake.move_voltage(0); // Loader 2 Scored
+
+        
+    } else if (selected_auton == 3) {
+  
     }
 }
 
 void opcontrol() {
+    Descorer.set_value(descorerClosed);
     Loader.set_value(loaderClosed);
     Middle_Goal.set_value(middleGoalClosed);
 
     while (true) {
-        int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-        int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
-        chassis.tank(leftY, rightY);
-
-        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+            chassis.setPose(0, 0, 0);
+            Loader.set_value(true);
+            chassis.moveToPoint(-14, 0, 500);
             Intake.move_voltage(12000);
-        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-            Intake.move_voltage(-12000);
-            Outtake.move_voltage(-12000);
-        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-            Intake.move_voltage(12000);
+            pros::delay(1500);
+            chassis.moveToPoint(18, 0, 1000);
             Outtake.move_voltage(12000);
-        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-            middleGoalClosed = false;
-            Middle_Goal.set_value(middleGoalClosed);
-            Intake.move_voltage(12000);
-            Outtake.move_voltage(12000);
+            pros::delay(3000);
         } else {
-            Intake.move_voltage(0);
-            Outtake.move(0);
-            middleGoalClosed = true;
-            Middle_Goal.set_value(middleGoalClosed);
-        }
+            int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+            int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+            chassis.tank(leftY, rightY);
 
-        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
-            Descorer.set_value(true);
-        } else {
-            Descorer.set_value(false);
-        }
+            if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+                Intake.move_voltage(12000);
+            } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+                Intake.move_voltage(-12000);
+                Outtake.move_voltage(-12000);
+            } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+                Intake.move_voltage(12000);
+                Outtake.move_voltage(12000);
+            } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+                middleGoalClosed = false;
+                Middle_Goal.set_value(middleGoalClosed);
+                Intake.move_voltage(12000);
+                Outtake.move_voltage(12000);
+            } else {
+                Intake.move_voltage(0);
+                Outtake.move(0);
+                middleGoalClosed = true;
+                Middle_Goal.set_value(middleGoalClosed);
+            }
 
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-            loaderClosed = !loaderClosed;
-            Loader.set_value(loaderClosed);
-        }
+            if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+                descorerClosed = !descorerClosed;
+                Descorer.set_value(descorerClosed);
+            }
+
+            if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+                loaderClosed = !loaderClosed;
+                Loader.set_value(loaderClosed);
+            }
 
             
 
-        pros::delay(10);
+            pros::delay(10);
+        }
     }
 }
