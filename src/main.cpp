@@ -241,9 +241,10 @@ void opcontrol() {
                 Middle_Goal.set_value(middleGoalClosed);
             }
 
-            if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-                descorerClosed = !descorerClosed;
-                Descorer.set_value(descorerClosed);
+            if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+                Descorer.set_value(true);
+            } else {
+                Descorer.set_value(false);
             }
 
             if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
