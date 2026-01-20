@@ -90,7 +90,6 @@ ASSET(Upper_Blue_txt);
 // AUTON SELECTOR CODE (with guard)
 //========================================================================================
 
-static bool descorerClosed = true;
 static bool loaderClosed = true;
 static bool middleGoalClosed = true;
 
@@ -134,7 +133,6 @@ ASSET(Goal_To_Goal_Turn_txt);
 
 
 void autonomous() {
-    Descorer.set_value(descorerClosed);
     Loader.set_value(loaderClosed);
     Middle_Goal.set_value(middleGoalClosed);
 
@@ -242,58 +240,47 @@ void autonomous() {
 }
 
 void opcontrol() {
-    Descorer.set_value(descorerClosed);
     Loader.set_value(loaderClosed);
     Middle_Goal.set_value(middleGoalClosed);
 
     while (true) {
-        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-            chassis.setPose(0, 0, 0);
-            Loader.set_value(true);
-            chassis.moveToPoint(-14, 0, 500);
+        int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
+        int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
+        chassis.tank(leftY, rightY);
+
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
             Intake.move_voltage(12000);
-            pros::delay(1500);
-            chassis.moveToPoint(18, 0, 1000);
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+            Intake.move_voltage(-12000);
+            Outtake.move_voltage(-12000);
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+            Intake.move_voltage(12000);
             Outtake.move_voltage(12000);
-            pros::delay(3000);
+        } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+            middleGoalClosed = false;
+            Middle_Goal.set_value(middleGoalClosed);
+            Intake.move_voltage(12000);
+            Outtake.move_voltage(12000);
         } else {
-            int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
-            int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
-            chassis.tank(leftY, rightY);
+            Intake.move_voltage(0);
+            Outtake.move(0);
+            middleGoalClosed = true;
+            Middle_Goal.set_value(middleGoalClosed);
+        }
 
-            if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
-                Intake.move_voltage(12000);
-            } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-                Intake.move_voltage(-12000);
-                Outtake.move_voltage(-12000);
-            } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-                Intake.move_voltage(12000);
-                Outtake.move_voltage(12000);
-            } else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-                middleGoalClosed = false;
-                Middle_Goal.set_value(middleGoalClosed);
-                Intake.move_voltage(12000);
-                Outtake.move_voltage(12000);
-            } else {
-                Intake.move_voltage(0);
-                Outtake.move(0);
-                middleGoalClosed = true;
-                Middle_Goal.set_value(middleGoalClosed);
-            }
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
+            Descorer.set_value(true);
+        } else {
+            Descorer.set_value(false);
+        }
 
-            if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-                descorerClosed = !descorerClosed;
-                Descorer.set_value(descorerClosed);
-            }
-
-            if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
-                loaderClosed = !loaderClosed;
-                Loader.set_value(loaderClosed);
-            }
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+            loaderClosed = !loaderClosed;
+            Loader.set_value(loaderClosed);
+        }
 
             
 
-            pros::delay(10);
-        }
+        pros::delay(10);
     }
 }
