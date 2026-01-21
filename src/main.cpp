@@ -151,10 +151,10 @@ void autonomous() {
         chassis.moveToPoint(31.5, 24, 1500);
         chassis.turnToHeading(180, 500);
         Loader.set_value(true);
-        chassis.moveToPoint(32, 2.6125, 1500, {.maxSpeed=60});
+        chassis.moveToPoint(32, 2.65, 1500, {.maxSpeed=60}, true);
         Intake.move_voltage(12000);
-        pros::delay(2500);
-        chassis.moveToPoint(33.5, 48, 1500, {.forwards=false, .maxSpeed=60}, false);
+        pros::delay(3000);
+        chassis.moveToPoint(32, 48, 1500, {.forwards=false, .maxSpeed=60}, false);
         Outtake.move_voltage(12000);
         pros::delay(100000);
         Outtake.move_voltage(0);
@@ -179,7 +179,7 @@ void autonomous() {
         chassis.turnToHeading(0, 500);
         chassis.moveToPoint(84, 45, 3000);
         chassis.turnToHeading(90, 500);
-        chassis.moveToPoint(60, 43, 3000, {.forwards=false});
+        chassis.moveToPoint(60, 45, 3000, {.forwards=false});
         Intake.move_voltage(12000);
         Outtake.move_voltage(12000);
         pros::delay(3000);  //Loader 1 Scored
@@ -187,7 +187,7 @@ void autonomous() {
 
         Intake.move_voltage(12000);
         Loader.set_value(true);
-        chassis.moveToPose(100, 45, 90,3000, {.maxSpeed=60});
+        chassis.moveToPose(100, 47, 90,3000, {.maxSpeed=60});
         pros::delay(2500);
         chassis.moveToPoint(60, 47, 3000, {.forwards=false, .maxSpeed=60}, false); // Loader 2 Clear
 
