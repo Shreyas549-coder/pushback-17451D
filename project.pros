@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "pushback",
+    "project_name": "Skills",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -652,7 +652,7 @@
       }
     },
     "upload_options": {
-      "slot": 1,
+      "slot": 5,
       "description": "It Worked",
       "icon": "X"
     },
